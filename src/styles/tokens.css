@@ -1,0 +1,40 @@
+/*
+ * Resonance Communications design tokens.
+ * Source: docs/brand-guidelines.pdf (Brand Color, Brand Typography, Visual Language).
+ * Only the four official colours plus tints/shades derived from them are allowed here.
+ */
+:root {
+  /* Official palette */
+  --color-teal: #01d2b2; /* Connection Teal: the signature signal */
+  --color-ink: #010101; /* Low Frequency */
+  --color-gray: #c0c1c3; /* Balanced Tone */
+  --color-paper: #f8f8f8; /* Pure Frequency */
+
+  /* Derived from the official palette */
+  --color-teal-pale: #b1eee5; /* mid-stop of the official Resonance Flow gradient */
+  --color-teal-hover: color-mix(in oklab, var(--color-teal) 85%, white);
+  --color-surface: #141414; /* dark panels used throughout the guideline */
+  --color-surface-raised: #1f1f1f;
+  --color-chip: #262626; /* keyword pill fill */
+  --color-deep: #03140f; /* green-black of the guideline cover */
+  --color-deep-2: #062a22;
+  --color-line-dark: rgb(255 255 255 / 0.08); /* fine grid lines on dark */
+  --color-line-light: rgb(1 1 1 / 0.08); /* fine grid lines on light */
+  --color-muted-dark: var(--color-gray); /* secondary text on dark (≈11:1 on ink) */
+  --color-muted-light: #55575b; /* secondary text on paper (≈7:1), a shade of Balanced Tone */
+
+  /* Type */
+  --font-display: var(--font-bricolage), 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: var(--font-plex), 'IBM Plex Sans', system-ui, sans-serif;
+  --font-amharic: var(--font-nokia), 'Noto Sans Ethiopic', 'Nyala', var(--font-body);
+
+  /* Layout */
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --container: 88rem;
+  --header-h: 5.25rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;
+  --dur-base: 420ms;
+}

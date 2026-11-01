@@ -1,0 +1,8 @@
+.next
+node_modules
+pnpm-lock.yaml
+docs
+brand-assets
+public
+src/sanity/types.ts
+src/sanity/extract.json

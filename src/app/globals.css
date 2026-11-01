@@ -1,0 +1,238 @@
+@import 'tailwindcss';
+@import '../styles/tokens.css';
+
+@theme inline {
+  --color-teal: var(--color-teal);
+  --color-teal-pale: var(--color-teal-pale);
+  --color-teal-hover: var(--color-teal-hover);
+  --color-ink: var(--color-ink);
+  --color-gray: var(--color-gray);
+  --color-paper: var(--color-paper);
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-chip: var(--color-chip);
+  --color-deep: var(--color-deep);
+  --color-deep-2: var(--color-deep-2);
+  --color-muted-dark: var(--color-muted-dark);
+  --color-muted-light: var(--color-muted-light);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-amharic: var(--font-amharic);
+
+  --ease-brand: var(--ease-out);
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :lang(am) {
+    font-family: var(--font-amharic);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  :lang(am) :is(h1, h2, h3, h4) {
+    font-family: var(--font-amharic);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-teal);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .on-light :focus-visible,
+  .on-light:focus-visible {
+    outline-color: var(--color-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ---------- Brand utilities ---------- */
+@utility container-brand {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* "K E Y W O R D S" label style from the guideline */
+@utility eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+@utility text-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+@utility text-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Fine grid lines, the motif of the guideline cover */
+@utility grid-lines {
+  background-image:
+    linear-gradient(to right, var(--grid-line, var(--color-line-dark)) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line, var(--color-line-dark)) 1px, transparent 1px);
+  background-size: var(--grid-size, 8rem) var(--grid-size, 8rem);
+}
+
+/* Lightweight film grain (SVG turbulence, ~400 bytes, no JS) */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: var(--grain-opacity, 0.09);
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* ---------- Signal Field (static pattern) ---------- */
+.signal-field {
+  --sf-size: 4.95rem; /* one unit of the official grid */
+  background-color: var(--sf-color, var(--color-teal));
+  opacity: var(--sf-opacity, 0.18);
+  -webkit-mask-image:
+    url('/brand/signal-field-tile.svg'), var(--sf-fade, linear-gradient(#000, #000));
+  mask-image: url('/brand/signal-field-tile.svg'), var(--sf-fade, linear-gradient(#000, #000));
+  -webkit-mask-size:
+    var(--sf-size) calc(var(--sf-size) * 0.748),
+    100% 100%;
+  mask-size:
+    var(--sf-size) calc(var(--sf-size) * 0.748),
+    100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* ---------- Resonance Flow (dynamic pattern) ---------- */
+@keyframes flow-pulse {
+  0%,
+  100% {
+    transform: scaleY(0.82);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.flow-segment {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.flow-animated .flow-segment {
+  animation: flow-pulse var(--flow-duration, 4.8s) var(--ease-out) infinite;
+  animation-delay: calc(var(--i) * var(--flow-stagger, 0.22s));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-animated .flow-segment {
+    animation: none;
+  }
+}
+
+/* ---------- Reveal on scroll (CSS-only, progressive) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+    .carrier-reveal {
+      animation: carrier-in linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 55%;
+    }
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes carrier-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ---------- Brand imagery ---------- */
+.img-bw {
+  filter: grayscale(1) contrast(1.08);
+}
