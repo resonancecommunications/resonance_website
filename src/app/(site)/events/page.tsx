@@ -9,12 +9,15 @@ import { TextBlock } from '@/components/sections/TextBlock'
 import { Paragraphs } from '@/components/ui/Paragraphs'
 import { getEventServices, getEventsPage } from '@/lib/content'
 import { buildMetadata } from '@/lib/seo'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getEventsPage()
   return buildMetadata({
     seo: page.seo,
     title: page.hero.eyebrow || page.hero.headline,
+    ogTitle: page.hero.headline,
+    ogLabel: page.hero.eyebrow,
     description: page.hero.supportingText?.[0],
     path: '/events',
   })
@@ -24,6 +27,7 @@ export default async function EventsPage() {
   const [page, eventServices] = await Promise.all([getEventsPage(), getEventServices()])
   return (
     <>
+      <Breadcrumbs path="/events" />
       <PageHero hero={page.hero} glow="left" flow={{ artwork: 'wave', segments: [0, 4] }} />
       <SplitSection
         eyebrow={page.whatWeDo.eyebrow}

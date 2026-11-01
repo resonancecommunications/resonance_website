@@ -9,7 +9,7 @@ import localFont from 'next/font/local'
 /** Primary typeface: headlines, titles, key messages, nav, buttons. */
 export const bricolage = localFont({
   src: '../../brand-assets/fonts/BricolageGrotesque-Variable-latin.woff2',
-  weight: '200 800',
+  weight: '200 700',
   variable: '--font-bricolage',
   display: 'swap',
   fallback: ['system-ui', 'Segoe UI', 'Arial'],

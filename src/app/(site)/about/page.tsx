@@ -7,12 +7,15 @@ import { VisionMission } from '@/components/sections/VisionMission'
 import { Paragraphs } from '@/components/ui/Paragraphs'
 import { getAboutPage } from '@/lib/content'
 import { buildMetadata } from '@/lib/seo'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getAboutPage()
   return buildMetadata({
     seo: page.seo,
     title: page.hero.eyebrow || page.hero.headline,
+    ogTitle: page.hero.headline,
+    ogLabel: page.hero.eyebrow,
     description: page.hero.supportingText?.[0],
     path: '/about',
   })
@@ -22,6 +25,7 @@ export default async function AboutPage() {
   const page = await getAboutPage()
   return (
     <>
+      <Breadcrumbs path="/about" />
       <PageHero hero={page.hero} glow="right" flow={{ artwork: 'wave', segments: [4, 8] }} />
       <SplitSection
         eyebrow={page.overview.eyebrow}

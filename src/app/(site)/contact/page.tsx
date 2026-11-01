@@ -6,12 +6,15 @@ import { PageHero } from '@/components/sections/PageHero'
 import { Eyebrow } from '@/components/ui/Eyebrow'
 import { getContactPage, getSiteSettings } from '@/lib/content'
 import { buildMetadata } from '@/lib/seo'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getContactPage()
   return buildMetadata({
     seo: page.seo,
     title: page.hero.eyebrow || page.hero.headline,
+    ogTitle: page.hero.headline,
+    ogLabel: page.hero.eyebrow,
     description: page.hero.supportingText?.[0],
     path: '/contact',
   })
@@ -43,6 +46,7 @@ export default async function ContactPage() {
 
   return (
     <>
+      <Breadcrumbs path="/contact" />
       <PageHero hero={page.hero} glow="left" />
       <section className="on-light relative bg-paper text-ink">
         <div className="container-brand grid gap-16 py-20 md:py-28 lg:grid-cols-12 lg:gap-16 lg:py-32">

@@ -9,6 +9,7 @@ import { Section } from '@/components/ui/Section'
 import { ProjectGallery } from '@/components/work/ProjectGallery'
 import { getOurWorkPage, getProject, getProjectSlugs } from '@/lib/content'
 import { buildMetadata } from '@/lib/seo'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 
 /** Unlisted slugs render fully before responding, so unknown ones return a real 404. */
 export const ensureStatic = 'navigation'
@@ -31,6 +32,7 @@ export async function generateMetadata({
     seo: project.seo,
     title: project.title,
     description: project.overview,
+    ogLabel: project.category?.title,
     path: `/our-work/${project.slug}`,
   })
 }
@@ -55,6 +57,10 @@ export default async function ProjectPage({ params }: PageProps<'/our-work/[slug
 
   return (
     <>
+      <Breadcrumbs
+        path="/our-work"
+        trail={[{ name: project.title, path: `/our-work/${project.slug}` }]}
+      />
       <section className="relative overflow-hidden bg-deep text-paper">
         <HeroBackdrop glow="right" />
         <div className="relative container-brand pt-12 pb-16 md:pt-20 md:pb-24">

@@ -8,12 +8,15 @@ import { WorkBrowser } from '@/components/work/WorkBrowser'
 import { WorkEmptyState } from '@/components/work/WorkEmptyState'
 import { getOurWorkPage, getProjectCategories, getProjects } from '@/lib/content'
 import { buildMetadata } from '@/lib/seo'
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getOurWorkPage()
   return buildMetadata({
     seo: page.seo,
     title: page.hero.eyebrow || page.hero.headline,
+    ogTitle: page.hero.headline,
+    ogLabel: page.hero.eyebrow,
     description: page.hero.supportingText?.[0],
     path: '/our-work',
   })
@@ -28,6 +31,7 @@ export default async function OurWorkPage() {
 
   return (
     <>
+      <Breadcrumbs path="/our-work" />
       <PageHero hero={page.hero} glow="center" />
       <Section tone="dark" className="pt-16 md:pt-20 lg:pt-24">
         {projects.length === 0 ? (

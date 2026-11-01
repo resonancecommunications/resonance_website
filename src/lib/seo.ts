@@ -11,6 +11,9 @@ type BuildMetadataInput = {
   path: string
   /** Use the title as-is, without the site title template. */
   absoluteTitle?: boolean
+  /** Headline and small label on the generated sharing image. */
+  ogTitle?: string | null
+  ogLabel?: string | null
 }
 
 /** Page metadata from Sanity SEO fields, with sensible fallbacks to page copy and site defaults. */
@@ -20,6 +23,8 @@ export async function buildMetadata({
   description,
   path,
   absoluteTitle = false,
+  ogTitle,
+  ogLabel,
 }: BuildMetadataInput): Promise<Metadata> {
   const settings = await getSiteSettings()
   const pageTitle = seo?.title || title
@@ -34,7 +39,14 @@ export async function buildMetadata({
           alt: shareImage.alt,
         },
       ]
-    : undefined
+    : [
+        {
+          url: `/api/og?${new URLSearchParams({ title: ogTitle || pageTitle, ...(ogLabel ? { label: ogLabel } : {}) })}`,
+          width: 1200,
+          height: 630,
+          alt: pageTitle,
+        },
+      ]
 
   return {
     title: absoluteTitle ? { absolute: pageTitle } : pageTitle,
@@ -48,14 +60,14 @@ export async function buildMetadata({
       url: path,
       title: pageTitle,
       description: pageDescription,
-      ...(images ? { images } : {}),
+      images,
     },
     twitter: {
       card: 'summary_large_image',
       title: pageTitle,
       description: pageDescription,
       ...(settings.socialHandle ? { site: settings.socialHandle } : {}),
-      ...(images ? { images: images.map((i) => i.url) } : {}),
+      images: images.map((i) => i.url),
     },
   }
 }

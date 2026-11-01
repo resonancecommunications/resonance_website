@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
   cacheLife: {
     default: sanity,
   },
+  experimental: {
+    // Inline the (small, atomic) Tailwind CSS: removes a render-blocking request,
+    // which matters most for first visits on slower mobile connections.
+    inlineCss: true,
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io' }],
