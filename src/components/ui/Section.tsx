@@ -54,8 +54,3 @@ export function Section({
     </section>
   )
 }
-
-/** True when text on this tone should use the light-background colour rules. */
-export function isLightTone(tone: SectionTone) {
-  return tone === 'light'
-}

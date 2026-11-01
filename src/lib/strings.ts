@@ -17,8 +17,6 @@ export const strings = {
     instagram: 'Instagram',
     youtube: 'YouTube',
   },
-  breadcrumb: 'Breadcrumb',
-  onThisPage: 'On this page',
   form: {
     required: 'Required',
     optional: 'Optional',
@@ -56,5 +54,4 @@ export const strings = {
     banner: 'Draft preview',
     exit: 'Exit preview',
   },
-  notConfigured: 'Content is served from the bundled spec copy. Connect Sanity to edit it.',
 } as const
