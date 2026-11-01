@@ -1,21 +1,50 @@
-import { HeroBackdrop } from '@/components/brand/HeroBackdrop'
-import { ResonanceFlow } from '@/components/brand/ResonanceFlow'
+import type { Metadata } from 'next'
+import { CtaBand } from '@/components/sections/CtaBand'
+import { DivisionShowcase } from '@/components/sections/DivisionShowcase'
+import { FeaturedWork } from '@/components/sections/FeaturedWork'
+import { HomeHero } from '@/components/sections/HomeHero'
+import { ProcessSteps } from '@/components/sections/ProcessSteps'
+import { Sectors } from '@/components/sections/Sectors'
+import { SplitSection } from '@/components/sections/SplitSection'
 import { CtaLink } from '@/components/ui/CtaLink'
-import { homePage } from '@/content/defaults'
+import { Paragraphs } from '@/components/ui/Paragraphs'
+import { getFeaturedProjects, getHomePage, getSiteSettings } from '@/lib/content'
+import { buildMetadata } from '@/lib/seo'
 
-export default function HomePage() {
-  const { hero } = homePage
+export async function generateMetadata(): Promise<Metadata> {
+  const [page, settings] = await Promise.all([getHomePage(), getSiteSettings()])
+  return buildMetadata({
+    seo: page.seo,
+    title: `${settings.siteName} | ${settings.tagline}`,
+    description: page.hero.supportingText?.[0],
+    path: '/',
+    absoluteTitle: true,
+  })
+}
+
+export default async function HomePage() {
+  const [page, featured] = await Promise.all([getHomePage(), getFeaturedProjects()])
+
   return (
-    <section className="relative overflow-hidden bg-deep text-paper">
-      <HeroBackdrop />
-      <div className="relative container-brand py-28">
-        <h1 className="max-w-4xl text-display text-5xl text-teal md:text-8xl">{hero.headline}</h1>
-        <div className="mt-10 flex flex-wrap gap-4">
-          {hero.primaryCta ? <CtaLink cta={hero.primaryCta} size="lg" /> : null}
-          {hero.secondaryCta ? <CtaLink cta={hero.secondaryCta} size="lg" /> : null}
-        </div>
-        <ResonanceFlow animated className="mt-16 w-full max-w-3xl" />
-      </div>
-    </section>
+    <>
+      <HomeHero hero={page.hero} />
+      <SplitSection
+        eyebrow={page.intro.eyebrow}
+        headline={page.intro.headline}
+        headingId="intro-heading"
+      >
+        <Paragraphs items={page.intro.body} lead className="text-paper/85" />
+        {page.intro.cta ? (
+          <div className="mt-10">
+            <CtaLink cta={page.intro.cta} />
+          </div>
+        ) : null}
+      </SplitSection>
+      <DivisionShowcase data={page.divisions} />
+      <ProcessSteps data={page.approach} />
+      <Sectors data={page.clients} />
+      <FeaturedWork data={page.featuredWork} projects={featured} />
+      <CtaBand banner={page.closingCta} />
+    </>
   )
 }

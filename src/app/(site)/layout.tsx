@@ -1,6 +1,17 @@
+import type { Metadata } from 'next'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { getSiteSettings } from '@/lib/content'
 import { strings } from '@/lib/strings'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings()
+  return {
+    title: { template: settings.seo.titleTemplate, default: settings.siteName },
+    description: settings.seo.description,
+    applicationName: settings.siteName,
+  }
+}
 
 export default function SiteLayout({ children }: LayoutProps<'/'>) {
   return (
