@@ -30,7 +30,9 @@ export async function Header() {
         <NavLinks items={navigation.main} />
       </nav>
       <div className="flex items-center gap-3">
-        <CtaLink cta={navigation.headerCta} className="hidden md:inline-flex" />
+        <div className="hidden md:block">
+          <CtaLink cta={navigation.headerCta} />
+        </div>
         <MobileMenu
           items={navigation.main}
           cta={navigation.headerCta}
