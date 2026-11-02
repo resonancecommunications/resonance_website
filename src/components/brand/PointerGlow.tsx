@@ -35,44 +35,63 @@ export function PointerGlow({ variant, className }: PointerGlowProps) {
     let current: HTMLElement | null = null
     let lastKey = ''
     let frame = 0
+    // Last known pointer position: scrolling moves the content under a still pointer,
+    // so the lit cell is recomputed on scroll too (otherwise it drifts with the page).
+    let pointer: { x: number; y: number } | null = null
 
-    const move = (event: PointerEvent) => {
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => {
-        const w = probe.offsetWidth
-        const h = probe.offsetHeight
-        if (!w || !h) return
-        const rect = root.getBoundingClientRect()
-        const x = event.clientX - rect.left
-        const y = event.clientY - rect.top
-        if (x < 0 || y < 0 || x > rect.width || y > rect.height) return leave()
-        const col = Math.floor(x / w)
-        const row = Math.floor(y / h)
-        const key = `${col}:${row}`
-        if (key === lastKey) return
-        lastKey = key
-        current?.classList.remove('is-on')
-        const cell = cells[next]
-        next = (next + 1) % cells.length
-        cell.style.width = `${w}px`
-        cell.style.height = `${h}px`
-        cell.style.transform = `translate(${col * w}px, ${row * h}px)`
-        cell.classList.add('is-on')
-        current = cell
-      })
-    }
     const leave = () => {
       current?.classList.remove('is-on')
       current = null
       lastKey = ''
     }
+    const paint = () => {
+      frame = 0
+      if (!pointer) return
+      const w = probe.offsetWidth
+      const h = probe.offsetHeight
+      if (!w || !h) return
+      const rect = root.getBoundingClientRect()
+      const x = pointer.x - rect.left
+      const y = pointer.y - rect.top
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) return leave()
+      // Only light up when this section is the topmost thing under the pointer
+      // (on Home, stacked sections overlap one another).
+      const hit = document.elementFromPoint(pointer.x, pointer.y)
+      if (!hit || !host.contains(hit)) return leave()
+      const col = Math.floor(x / w)
+      const row = Math.floor(y / h)
+      const key = `${col}:${row}`
+      if (key === lastKey) return
+      lastKey = key
+      current?.classList.remove('is-on')
+      const cell = cells[next]
+      next = (next + 1) % cells.length
+      cell.style.width = `${w}px`
+      cell.style.height = `${h}px`
+      cell.style.transform = `translate(${col * w}px, ${row * h}px)`
+      cell.classList.add('is-on')
+      current = cell
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(paint)
+    }
+    const move = (event: PointerEvent) => {
+      pointer = { x: event.clientX, y: event.clientY }
+      schedule()
+    }
+    const out = () => {
+      pointer = null
+      leave()
+    }
 
     host.addEventListener('pointermove', move, { passive: true })
-    host.addEventListener('pointerleave', leave)
+    host.addEventListener('pointerleave', out)
+    window.addEventListener('scroll', schedule, { passive: true })
     return () => {
       cancelAnimationFrame(frame)
       host.removeEventListener('pointermove', move)
-      host.removeEventListener('pointerleave', leave)
+      host.removeEventListener('pointerleave', out)
+      window.removeEventListener('scroll', schedule)
     }
   }, [])
 

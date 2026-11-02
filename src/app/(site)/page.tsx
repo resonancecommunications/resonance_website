@@ -56,7 +56,7 @@ export default async function HomePage() {
   return (
     <>
       {layers.map((layer, i) => (
-        <StackLayer key={i} index={i}>
+        <StackLayer key={i} index={i} last={i === layers.length - 1}>
           {layer}
         </StackLayer>
       ))}

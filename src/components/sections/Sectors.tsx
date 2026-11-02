@@ -26,26 +26,29 @@ export function Sectors({ data }: { data: HomePage['clients'] }) {
       <h3 className="mt-16 eyebrow text-ink lg:mt-20">{data.sectorsLabel}</h3>
       <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {data.sectors.map((sector) => (
-          <li
-            key={sector.title}
-            className="reveal group relative flex flex-col rounded-[1.5rem] bg-ink p-7 text-paper transition-transform duration-500 ease-brand hover:-translate-y-1"
-          >
-            <span className="flex size-12 items-center justify-center rounded-full bg-chip text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-ink">
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="size-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d={ICONS[sector.icon] ?? ICONS.corporate} />
-              </svg>
-            </span>
-            <h4 className="mt-10 font-display text-xl leading-tight font-medium">{sector.title}</h4>
-            <p className="mt-3 text-[0.9375rem] text-muted-dark">{sector.description}</p>
+          // The scroll-reveal animation owns `transform` on the <li>, so the hover lift
+          // lives on the inner card.
+          <li key={sector.title} className="reveal flex">
+            <div className="group relative flex flex-1 flex-col rounded-[1.5rem] bg-ink p-7 text-paper transition-transform duration-500 ease-brand hover:-translate-y-1">
+              <span className="flex size-12 items-center justify-center rounded-full bg-chip text-teal transition-colors duration-300 group-hover:bg-teal group-hover:text-ink">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="size-6"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d={ICONS[sector.icon] ?? ICONS.corporate} />
+                </svg>
+              </span>
+              <h4 className="mt-10 font-display text-xl leading-tight font-medium">
+                {sector.title}
+              </h4>
+              <p className="mt-3 text-[0.9375rem] text-muted-dark">{sector.description}</p>
+            </div>
           </li>
         ))}
       </ul>

@@ -8,7 +8,10 @@ import { slugify } from '@/lib/utils'
 export function CtaBand({ banner }: { banner: CtaBanner }) {
   const id = `cta-${slugify(banner.headline)}`
   return (
-    <section aria-labelledby={id} className="relative overflow-hidden bg-deep text-paper">
+    <section
+      aria-labelledby={id}
+      className="relative flex flex-col justify-center overflow-hidden bg-deep text-paper"
+    >
       <HeroBackdrop glow="center" />
       <SignalField opacity={0.12} fade="radial" interactive />
       <div className="reveal relative container-brand py-24 text-center md:py-32 lg:py-40">
