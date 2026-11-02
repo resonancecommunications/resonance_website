@@ -15,6 +15,33 @@
 export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: src/sanity/extract.json
+export type SanityImageAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
+
+export type PartnerLogo = {
+  _type: 'partnerLogo'
+  name?: string
+  logo?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  url?: string
+}
+
+export type SectorItem = {
+  _type: 'sectorItem'
+  title?: string
+  description?: string
+  icon?: 'corporate' | 'finance' | 'government' | 'ngo' | 'growth'
+}
+
 export type CapabilitySection = {
   _type: 'capabilitySection'
   eyebrow?: string
@@ -88,13 +115,6 @@ export type GalleryVideo = {
   url?: string
   title?: string
   caption?: string
-}
-
-export type SanityImageAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
 export type BrandImage = {
@@ -405,6 +425,16 @@ export type HomePage = {
   _rev: string
   hero?: HeroBlock
   intro?: TextSection
+  partners?: {
+    eyebrow?: string
+    headline?: string
+    intro?: string
+    logos?: Array<
+      {
+        _key: string
+      } & PartnerLogo
+    >
+  }
   divisions?: {
     eyebrow?: string
     headline?: string
@@ -432,7 +462,11 @@ export type HomePage = {
     headline?: string
     body?: string
     sectorsLabel?: string
-    sectors?: Array<string>
+    sectors?: Array<
+      {
+        _key: string
+      } & SectorItem
+    >
   }
   featuredWork?: {
     eyebrow?: string
@@ -459,12 +493,6 @@ export type Navigation = {
   footer?: {
     quickLinksHeading?: string
     quickLinks?: Array<
-      {
-        _key: string
-      } & NavItem
-    >
-    divisionsHeading?: string
-    divisions?: Array<
       {
         _key: string
       } & NavItem
@@ -646,6 +674,9 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
+  | SanityImageAssetReference
+  | PartnerLogo
+  | SectorItem
   | CapabilitySection
   | Division
   | ValueItem
@@ -655,7 +686,6 @@ export type AllSanitySchemaTypes =
   | TextSection
   | HeroBlock
   | GalleryVideo
-  | SanityImageAssetReference
   | BrandImage
   | NavItem
   | Cta
@@ -743,7 +773,7 @@ export type SiteSettingsQueryResult = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: navigationQuery
-// Query: *[_type == "navigation"][0]{  main[]{label, "href": select(linkType == "external" => url, internalPath)},  headerCta{label, style, "href": select(linkType == "external" => url, internalPath)},  footer{    quickLinksHeading, quickLinks[]{label, "href": select(linkType == "external" => url, internalPath)},    divisionsHeading, divisions[]{label, "href": select(linkType == "external" => url, internalPath)},    contactHeading, socialHeading  }}
+// Query: *[_type == "navigation"][0]{  main[]{label, "href": select(linkType == "external" => url, internalPath)},  headerCta{label, style, "href": select(linkType == "external" => url, internalPath)},  footer{    quickLinksHeading, quickLinks[]{label, "href": select(linkType == "external" => url, internalPath)},    contactHeading, socialHeading  }}
 export type NavigationQueryResult = {
   main: Array<{
     label: string | null
@@ -760,11 +790,6 @@ export type NavigationQueryResult = {
       label: string | null
       href: string | null
     }> | null
-    divisionsHeading: string | null
-    divisions: Array<{
-      label: string | null
-      href: string | null
-    }> | null
     contactHeading: string | null
     socialHeading: string | null
   } | null
@@ -772,7 +797,7 @@ export type NavigationQueryResult = {
 
 // Source: src/sanity/lib/queries.ts
 // Variable: homePageQuery
-// Query: *[_type == "homePage"][0]{  hero{eyebrow, headline, alternativeHeadlines, supportingText, primaryCta{label, style, "href": select(linkType == "external" => url, internalPath)}, secondaryCta{label, style, "href": select(linkType == "external" => url, internalPath)}, image{asset->{_id, url, metadata{lqip, dimensions{width, height}}}, crop, hotspot, alt, caption, treatment, overlayOpacity}},  intro{eyebrow, headline, body, cta{label, style, "href": select(linkType == "external" => url, internalPath)}},  divisions{eyebrow, headline, intro, items[]{key, number, title, headline, body, servicesLabel, services, cta{label, style, "href": select(linkType == "external" => url, internalPath)}}},  approach{eyebrow, headline, body, processLabel, steps[]{title, description}, cta{label, style, "href": select(linkType == "external" => url, internalPath)}},  clients{eyebrow, headline, body, sectorsLabel, sectors},  featuredWork{eyebrow, headline, body, cta{label, style, "href": select(linkType == "external" => url, internalPath)}},  closingCta{headline, body, primaryCta{label, style, "href": select(linkType == "external" => url, internalPath)}, secondaryCta{label, style, "href": select(linkType == "external" => url, internalPath)}},  seo{title, description, noIndex, ogImage{asset->{_id, url, metadata{lqip, dimensions{width, height}}}, crop, hotspot, alt, caption, treatment, overlayOpacity}}}
+// Query: *[_type == "homePage"][0]{  hero{eyebrow, headline, alternativeHeadlines, supportingText, primaryCta{label, style, "href": select(linkType == "external" => url, internalPath)}, secondaryCta{label, style, "href": select(linkType == "external" => url, internalPath)}, image{asset->{_id, url, metadata{lqip, dimensions{width, height}}}, crop, hotspot, alt, caption, treatment, overlayOpacity}},  intro{eyebrow, headline, body, cta{label, style, "href": select(linkType == "external" => url, internalPath)}},  divisions{eyebrow, headline, intro, items[]{key, number, title, headline, body, servicesLabel, services, cta{label, style, "href": select(linkType == "external" => url, internalPath)}}},  approach{eyebrow, headline, body, processLabel, steps[]{title, description}, cta{label, style, "href": select(linkType == "external" => url, internalPath)}},  clients{eyebrow, headline, body, sectorsLabel, sectors[]{title, description, icon}},  partners{eyebrow, headline, intro, logos[]{_key, name, url, logo{asset->{url, metadata{dimensions{width, height}}}}}},  featuredWork{eyebrow, headline, body, cta{label, style, "href": select(linkType == "external" => url, internalPath)}},  closingCta{headline, body, primaryCta{label, style, "href": select(linkType == "external" => url, internalPath)}, secondaryCta{label, style, "href": select(linkType == "external" => url, internalPath)}},  seo{title, description, noIndex, ogImage{asset->{_id, url, metadata{lqip, dimensions{width, height}}}, crop, hotspot, alt, caption, treatment, overlayOpacity}}}
 export type HomePageQueryResult = {
   hero: {
     eyebrow: string | null
@@ -858,7 +883,32 @@ export type HomePageQueryResult = {
     headline: string | null
     body: string | null
     sectorsLabel: string | null
-    sectors: Array<string> | null
+    sectors: Array<{
+      title: string | null
+      description: string | null
+      icon: 'corporate' | 'finance' | 'government' | 'growth' | 'ngo' | null
+    }> | null
+  } | null
+  partners: {
+    eyebrow: string | null
+    headline: string | null
+    intro: string | null
+    logos: Array<{
+      _key: string
+      name: string | null
+      url: string | null
+      logo: {
+        asset: {
+          url: string | null
+          metadata: {
+            dimensions: {
+              width: number | null
+              height: number | null
+            } | null
+          } | null
+        } | null
+      } | null
+    }> | null
   } | null
   featuredWork: {
     eyebrow: string | null

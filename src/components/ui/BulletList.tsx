@@ -4,11 +4,19 @@ type BulletListProps = {
   items: string[]
   columns?: 1 | 2
   tone?: 'light' | 'dark'
+  /** lg: display typeface at a larger size (division service lists). */
+  size?: 'md' | 'lg'
   className?: string
 }
 
 /** List with short teal rules as markers. */
-export function BulletList({ items, columns = 1, tone = 'dark', className }: BulletListProps) {
+export function BulletList({
+  items,
+  columns = 1,
+  tone = 'dark',
+  size = 'md',
+  className,
+}: BulletListProps) {
   return (
     <ul
       className={cn(
@@ -22,11 +30,19 @@ export function BulletList({ items, columns = 1, tone = 'dark', className }: Bul
         <li
           key={item}
           className={cn(
-            'flex items-start gap-3 border-b py-3 text-[0.9375rem] leading-snug',
+            'flex items-start gap-3 border-b leading-snug',
+            size === 'lg' ? 'py-3.5 font-display text-lg' : 'py-3 text-[0.9375rem]',
             tone === 'dark' ? 'border-white/10' : 'border-ink/10',
+            size === 'lg' && tone === 'dark' && 'text-paper',
           )}
         >
-          <span aria-hidden="true" className="mt-[0.6em] h-0.5 w-3 shrink-0 bg-teal" />
+          <span
+            aria-hidden="true"
+            className={cn(
+              'h-0.5 shrink-0 bg-teal',
+              size === 'lg' ? 'mt-[0.7em] w-4' : 'mt-[0.6em] w-3',
+            )}
+          />
           <span>{item}</span>
         </li>
       ))}

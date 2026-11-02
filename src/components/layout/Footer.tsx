@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { cacheLife } from 'next/cache'
 import { Logo } from '@/components/brand/Logo'
 import { SignalField } from '@/components/brand/SignalField'
+import { SpinningBadge } from '@/components/brand/SpinningBadge'
 import type { NavItem } from '@/content/types'
 import { getNavigation, getSiteSettings } from '@/lib/content'
 import { strings } from '@/lib/strings'
@@ -59,27 +60,18 @@ export async function Footer() {
           <p className="mt-4 max-w-sm text-[0.9375rem] text-muted-dark">{settings.description}</p>
         </div>
 
-        <nav
-          aria-label={strings.footerNavigation}
-          className="grid gap-12 sm:grid-cols-2 lg:col-span-5"
-        >
-          <div>
-            <FooterHeading>{footer.quickLinksHeading}</FooterHeading>
-            <FooterLinks items={footer.quickLinks} />
-          </div>
-          <div>
-            <FooterHeading>{footer.divisionsHeading}</FooterHeading>
-            <FooterLinks items={footer.divisions} />
-          </div>
+        <nav aria-label={strings.footerNavigation} className="lg:col-span-2 lg:col-start-6">
+          <FooterHeading>{footer.quickLinksHeading}</FooterHeading>
+          <FooterLinks items={footer.quickLinks} />
         </nav>
 
-        <div className="grid gap-12 sm:grid-cols-2 lg:col-span-3 lg:grid-cols-1">
+        <div className="grid gap-12 sm:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:col-span-5">
           <div>
             <FooterHeading>{footer.contactHeading}</FooterHeading>
             <address className="space-y-1 text-paper/80 not-italic">
               <a
                 href={`mailto:${settings.contactEmail}`}
-                className="inline-flex min-h-10 items-center break-all transition-colors hover:text-teal"
+                className="inline-flex min-h-10 items-center [overflow-wrap:anywhere] transition-colors hover:text-teal"
               >
                 {settings.contactEmail}
               </a>
@@ -104,18 +96,15 @@ export async function Footer() {
       </div>
 
       <div className="relative border-t border-white/10">
-        <SignalField opacity={0.14} fade="bottom" className="-bottom-6" />
+        <SignalField opacity={0.14} fade="bottom" className="-bottom-6" interactive />
         <div className="relative container-brand flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <p className="font-display text-lg text-paper">{settings.footerStatement}</p>
             <p className="text-sm text-muted-dark">{strings.copyright(year, settings.siteName)}</p>
           </div>
-          <Logo
-            variant="symbol"
-            tone="dark"
-            height={88}
+          <SpinningBadge
+            size={88}
             alt={`${settings.siteName}: ${settings.brandLine}`}
-            src={settings.logos?.symbol}
             className="-m-[19px] self-start md:self-auto"
           />
         </div>

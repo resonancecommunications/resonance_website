@@ -10,7 +10,14 @@ import { cta } from './objects/cta'
 import { ctaBanner } from './objects/ctaBanner'
 import { galleryVideo } from './objects/galleryVideo'
 import { heroBlock } from './objects/heroBlock'
-import { capabilitySection, division, processStep, valueItem } from './objects/items'
+import {
+  capabilitySection,
+  division,
+  partnerLogo,
+  processStep,
+  sectorItem,
+  valueItem,
+} from './objects/items'
 import { navItem } from './objects/navItem'
 import { seo } from './objects/seo'
 import { textSection } from './objects/textSection'
@@ -72,4 +79,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   valueItem,
   division,
   capabilitySection,
+  sectorItem,
+  partnerLogo,
 ]

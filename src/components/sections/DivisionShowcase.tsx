@@ -21,7 +21,7 @@ function DivisionCard({ division }: { division: Division }) {
       aria-labelledby={headingId}
       className="reveal relative flex flex-col overflow-hidden rounded-[1.75rem] bg-surface p-7 text-paper sm:p-10 lg:p-12"
     >
-      <SignalField opacity={0.07} fade={flow.flip ? 'left' : 'right'} />
+      <SignalField opacity={0.07} fade={flow.flip ? 'left' : 'right'} interactive />
       <ResonanceFlow
         artwork={flow.artwork}
         segments={[...flow.segments]}
@@ -45,7 +45,7 @@ function DivisionCard({ division }: { division: Division }) {
         </h3>
         <p className="mt-4 text-muted-dark">{division.body}</p>
         <p className="mt-8 eyebrow text-teal">{division.servicesLabel}</p>
-        <BulletList items={division.services} columns={2} className="mt-2" />
+        <BulletList items={division.services} columns={2} size="lg" className="mt-2" />
         <div className="mt-auto pt-10">
           <CtaLink cta={division.cta} />
         </div>

@@ -33,7 +33,6 @@ export const navigationQuery = defineQuery(`*[_type == "navigation"][0]{
   headerCta{${cta}},
   footer{
     quickLinksHeading, quickLinks[]{${navItem}},
-    divisionsHeading, divisions[]{${navItem}},
     contactHeading, socialHeading
   }
 }`)
@@ -43,7 +42,8 @@ export const homePageQuery = defineQuery(`*[_type == "homePage"][0]{
   intro{${textSection}},
   divisions{eyebrow, headline, intro, items[]{key, number, title, headline, body, servicesLabel, services, cta{${cta}}}},
   approach{eyebrow, headline, body, processLabel, steps[]{title, description}, cta{${cta}}},
-  clients{eyebrow, headline, body, sectorsLabel, sectors},
+  clients{eyebrow, headline, body, sectorsLabel, sectors[]{title, description, icon}},
+  partners{eyebrow, headline, intro, logos[]{_key, name, url, logo{asset->{url, metadata{dimensions{width, height}}}}}},
   featuredWork{eyebrow, headline, body, cta{${cta}}},
   closingCta{${banner}},
   ${seo}

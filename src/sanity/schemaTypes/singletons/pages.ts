@@ -47,6 +47,18 @@ export const homePage = defineType({
   fields: [
     hero(),
     section('intro', 'Section 2: Introduction'),
+    group('partners', 'Section 2b: Our Group (sister companies)', [
+      requiredString('eyebrow', 'Eyebrow'),
+      requiredString('headline', 'Headline'),
+      defineField({ name: 'intro', title: 'Intro (optional)', type: 'text', rows: 2 }),
+      defineField({
+        name: 'logos',
+        title: 'Sister company logos',
+        description: 'The section is hidden on the site until at least one logo is added.',
+        type: 'array',
+        of: [defineArrayMember({ type: 'partnerLogo' })],
+      }),
+    ]),
     group('divisions', 'Section 3: Our Divisions', [
       requiredString('eyebrow', 'Eyebrow'),
       requiredString('headline', 'Headline'),
@@ -77,7 +89,12 @@ export const homePage = defineType({
       requiredString('headline', 'Headline'),
       requiredText('body', 'Body'),
       requiredString('sectorsLabel', 'Sectors label'),
-      stringListField('sectors', 'Sectors'),
+      defineField({
+        name: 'sectors',
+        title: 'Sectors',
+        type: 'array',
+        of: [defineArrayMember({ type: 'sectorItem' })],
+      }),
     ]),
     group('featuredWork', 'Section 6: Featured Work', [
       requiredString('eyebrow', 'Eyebrow'),

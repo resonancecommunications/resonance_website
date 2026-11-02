@@ -9,7 +9,7 @@ export function HomeHero({ hero }: { hero: Hero }) {
   return (
     <section className="relative isolate overflow-hidden bg-deep text-paper">
       <HeroBackdrop glow="right" />
-      <div className="relative container-brand flex min-h-[calc(100svh-var(--header-h))] flex-col justify-between gap-16 pt-16 pb-10 md:pt-24 lg:pt-28">
+      <div className="relative container-brand flex min-h-svh flex-col justify-between gap-16 pt-[calc(var(--header-h)+4rem)] pb-10 md:pt-[calc(var(--header-h)+6rem)] lg:pt-[calc(var(--header-h)+7rem)]">
         <div>
           <h1 className="max-w-[15ch] type-hero text-teal">{hero.headline}</h1>
           <Paragraphs

@@ -117,8 +117,6 @@ export type Navigation = {
   footer: {
     quickLinksHeading: string
     quickLinks: NavItem[]
-    divisionsHeading: string
-    divisions: NavItem[]
     contactHeading: string
     socialHeading: string
   }
@@ -153,6 +151,26 @@ export type ProcessStep = {
   description: string
 }
 
+export type SectorIcon = 'corporate' | 'finance' | 'government' | 'ngo' | 'growth'
+
+export type SectorItem = {
+  title: string
+  description: string
+  icon: SectorIcon
+}
+
+export type PartnerLogo = {
+  _key: string
+  name: string
+  url?: string | null
+  logo?: {
+    asset: {
+      url: string
+      metadata?: { dimensions?: { width: number; height: number } | null } | null
+    }
+  } | null
+}
+
 export type ValueItem = {
   title: string
   description: string
@@ -176,7 +194,13 @@ export type HomePage = {
     headline: string
     body: string
     sectorsLabel: string
-    sectors: string[]
+    sectors: SectorItem[]
+  }
+  partners: {
+    eyebrow: string
+    headline: string
+    intro?: string | null
+    logos: PartnerLogo[]
   }
   featuredWork: {
     eyebrow: string

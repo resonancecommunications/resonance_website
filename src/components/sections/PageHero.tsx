@@ -32,7 +32,7 @@ export function PageHero({ hero, glow = 'right', flow = null, className }: PageH
           )}
         />
       ) : null}
-      <div className="relative container-brand pt-16 pb-36 md:pt-24 md:pb-48 lg:pt-32 lg:pb-56">
+      <div className="relative container-brand pt-[calc(var(--header-h)+4rem)] pb-36 md:pt-[calc(var(--header-h)+6rem)] md:pb-48 lg:pt-[calc(var(--header-h)+8rem)] lg:pb-56">
         {hero.eyebrow ? <Carrier size="sm">{hero.eyebrow}</Carrier> : null}
         <h1 className="mt-8 max-w-5xl type-h1 text-teal">{hero.headline}</h1>
         <Paragraphs

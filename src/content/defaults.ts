@@ -56,8 +56,6 @@ export const navigation: Navigation = {
     { label: 'Home', href: '/' },
     { label: 'About Us', href: '/about' },
     { label: 'Services', href: '/services' },
-    { label: 'Events', href: '/events' },
-    { label: 'Media & Communications', href: '/media-communications' },
     { label: 'Our Work', href: '/our-work' },
     { label: 'Contact', href: CONTACT },
   ],
@@ -70,11 +68,6 @@ export const navigation: Navigation = {
       { label: 'Services', href: '/services' },
       { label: 'Our Work', href: '/our-work' },
       { label: 'Contact', href: CONTACT },
-    ],
-    divisionsHeading: 'Our Divisions',
-    divisions: [
-      { label: 'Resonance Events', href: '/events' },
-      { label: 'Resonance Media & Communications', href: '/media-communications' },
     ],
     contactHeading: 'Contact',
     socialHeading: 'Social Media',
@@ -100,10 +93,9 @@ export const homePage: HomePage = {
   intro: {
     eyebrow: 'WHO WE ARE',
     headline: 'More Than a Service Provider. Your Integrated Experience Partner.',
+    // Client feedback (Nov 2026): keep this short; the full story lives on About Us.
     body: [
       'Resonance Communications is an Ethiopian corporate communications company bringing together events, media production, creative services, and strategic communication.',
-      'We work with organizations to develop meaningful experiences and effective communication, combining creative thinking, professional production, and technology-driven solutions under one integrated approach.',
-      'From corporate gatherings and large-scale events to media production and communication campaigns, we help brands communicate consistently and connect with the audiences who matter.',
     ],
     cta: { label: 'Discover Resonance', href: '/about', style: 'secondary' },
   },
@@ -114,27 +106,8 @@ export const homePage: HomePage = {
       'Our work is organized around two complementary divisions, each with specialized capabilities and a shared commitment to quality, creativity, and professional execution.',
     items: [
       {
-        key: 'events',
-        number: '01',
-        title: 'Resonance Events',
-        headline: 'Experiences That Bring People Together.',
-        body: 'We plan and produce corporate events that connect organizations with their audiences. From conferences and general assemblies to product launches and large-scale gatherings, we manage the creative and production process behind meaningful live experiences.',
-        servicesLabel: 'Services:',
-        services: [
-          'Corporate Events & Conferences',
-          'General Assemblies',
-          'Product Launches',
-          'Trade Fairs & Exhibitions',
-          'Government & Institutional Events',
-          'Event Planning & Production',
-          'Stage, Venue & Event Branding',
-          'Event Documentation',
-        ],
-        cta: { label: 'Explore Events', href: '/events', style: 'secondary' },
-      },
-      {
         key: 'media',
-        number: '02',
+        number: '01',
         title: 'Resonance Media & Communications',
         headline: 'Communication That Connects and Inspires.',
         body: 'We help organizations communicate their identity, ideas, and activities through strategic communication, professional media production, and creative content.',
@@ -154,6 +127,25 @@ export const homePage: HomePage = {
           href: '/media-communications',
           style: 'secondary',
         },
+      },
+      {
+        key: 'events',
+        number: '02',
+        title: 'Resonance Events',
+        headline: 'Experiences That Bring People Together.',
+        body: 'We plan and produce corporate events that connect organizations with their audiences. From conferences and general assemblies to product launches and large-scale gatherings, we manage the creative and production process behind meaningful live experiences.',
+        servicesLabel: 'Services:',
+        services: [
+          'Corporate Events & Conferences',
+          'General Assemblies',
+          'Product Launches',
+          'Trade Fairs & Exhibitions',
+          'Government & Institutional Events',
+          'Event Planning & Production',
+          'Stage, Venue & Event Branding',
+          'Event Documentation',
+        ],
+        cta: { label: 'Explore Events', href: '/events', style: 'secondary' },
       },
     ],
   },
@@ -199,13 +191,44 @@ export const homePage: HomePage = {
     headline: 'Supporting Organizations That Move People and Ideas Forward.',
     body: 'We work with organizations across different sectors, delivering communication, media, creative, and event solutions aligned with their institutional goals.',
     sectorsLabel: 'Sectors:',
+    // Titles from the spec; descriptions are draft copy added for client review (Nov 2026).
     sectors: [
-      'Corporate & Private Sector',
-      'Financial Institutions & SACCOS',
-      'Government Institutions',
-      'Non-Governmental Organizations',
-      'Growing Businesses & SMEs',
+      {
+        title: 'Corporate & Private Sector',
+        description:
+          'Launches, corporate events and communication that reflect how a company wants to be seen.',
+        icon: 'corporate',
+      },
+      {
+        title: 'Financial Institutions & SACCOS',
+        description:
+          'General assemblies, member communication and campaigns built on clarity and trust.',
+        icon: 'finance',
+      },
+      {
+        title: 'Government Institutions',
+        description: 'Formal and public-facing events and communication, delivered with care.',
+        icon: 'government',
+      },
+      {
+        title: 'Non-Governmental Organizations',
+        description:
+          'Campaigns, documentation and events that make programs and their impact visible.',
+        icon: 'ngo',
+      },
+      {
+        title: 'Growing Businesses & SMEs',
+        description: 'Branding, content and launches that help growing organizations get noticed.',
+        icon: 'growth',
+      },
     ],
+  },
+  // Sister companies of the holding group. Hidden on the site until logos are added in Sanity.
+  partners: {
+    eyebrow: 'OUR GROUP',
+    headline: 'Sister Companies',
+    intro: null,
+    logos: [],
   },
   featuredWork: {
     eyebrow: 'SELECTED PROJECTS',

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { PointerGlow } from '@/components/brand/PointerGlow'
 import { cn } from '@/lib/utils'
 
 export type SectionTone = 'light' | 'dark' | 'surface' | 'deep'
@@ -41,13 +42,18 @@ export function Section({
       className={cn('relative overflow-hidden py-20 md:py-28 lg:py-32', TONES[tone], className)}
     >
       {gridLines ? (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 grid-lines"
-          style={
-            tone === 'light' ? { ['--grid-line' as string]: 'var(--color-line-light)' } : undefined
-          }
-        />
+        <>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 grid-lines"
+            style={
+              tone === 'light'
+                ? { ['--grid-line' as string]: 'var(--color-line-light)' }
+                : undefined
+            }
+          />
+          <PointerGlow variant="grid" />
+        </>
       ) : null}
       {bleed}
       <div className={cn('relative container-brand', containerClassName)}>{children}</div>

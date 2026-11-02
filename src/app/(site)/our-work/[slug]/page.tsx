@@ -63,7 +63,7 @@ export default async function ProjectPage({ params }: PageProps<'/our-work/[slug
       />
       <section className="relative overflow-hidden bg-deep text-paper">
         <HeroBackdrop glow="right" />
-        <div className="relative container-brand pt-12 pb-16 md:pt-20 md:pb-24">
+        <div className="relative container-brand pt-[calc(var(--header-h)+3rem)] pb-16 md:pt-[calc(var(--header-h)+5rem)] md:pb-24">
           <Link
             href="/our-work"
             className="group inline-flex min-h-11 items-center gap-3 text-sm text-muted-dark hover:text-teal"

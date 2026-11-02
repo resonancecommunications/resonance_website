@@ -30,8 +30,6 @@ export const navigation = defineType({
       fields: [
         requiredString('quickLinksHeading', 'Quick links heading'),
         navList('quickLinks', 'Quick links'),
-        requiredString('divisionsHeading', 'Divisions heading'),
-        navList('divisions', 'Division links'),
         requiredString('contactHeading', 'Contact heading'),
         requiredString('socialHeading', 'Social media heading'),
       ],

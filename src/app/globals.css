@@ -209,12 +209,12 @@
 @keyframes flow-pulse {
   0%,
   100% {
-    transform: scaleY(0.82);
-    opacity: 0.35;
+    transform: scaleY(0.94);
+    opacity: 0.6;
   }
   50% {
     transform: scaleY(1);
-    opacity: 1;
+    opacity: 0.95;
   }
 }
 
@@ -224,8 +224,8 @@
 }
 
 .flow-animated .flow-segment {
-  animation: flow-pulse var(--flow-duration, 4.8s) var(--ease-out) infinite;
-  animation-delay: calc(var(--i) * var(--flow-stagger, 0.22s));
+  animation: flow-pulse var(--flow-duration, 7.2s) ease-in-out infinite;
+  animation-delay: calc(var(--i) * var(--flow-stagger, 0.35s));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -273,4 +273,94 @@
 /* ---------- Brand imagery ---------- */
 .img-bw {
   filter: grayscale(1) contrast(1.08);
+}
+
+/* ---------- Interactive pattern glow (PointerGlow) ---------- */
+.glow-probe-grid {
+  position: absolute;
+  visibility: hidden;
+  width: var(--grid-size, 8rem);
+  height: var(--grid-size, 8rem);
+}
+.glow-probe-signal {
+  position: absolute;
+  visibility: hidden;
+  width: var(--sf-size, 4.95rem);
+  height: calc(var(--sf-size, 4.95rem) * 0.748);
+}
+.glow-cell-grid,
+.glow-cell-signal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 1100ms ease-out;
+  will-change: opacity, transform;
+}
+.glow-cell-grid {
+  background: rgb(1 210 178 / 0.07);
+  box-shadow: inset 1px 1px 0 rgb(1 210 178 / 0.4);
+}
+.glow-cell-signal {
+  background: var(--color-teal);
+  -webkit-mask: url('/brand/signal-field-tile-fill.svg') center / 100% 100% no-repeat;
+  mask: url('/brand/signal-field-tile-fill.svg') center / 100% 100% no-repeat;
+}
+.glow-cell-grid.is-on {
+  opacity: 1;
+  transition-duration: 160ms;
+}
+.glow-cell-signal.is-on {
+  opacity: 0.2;
+  transition-duration: 160ms;
+}
+
+/* ---------- Split section: hovered half widens (desktop) ---------- */
+@media (min-width: 1024px) {
+  .split-expand > .split-left,
+  .split-expand > .split-right {
+    flex-basis: 0;
+    transition: flex-grow 700ms var(--ease-out);
+  }
+  .split-expand > .split-left {
+    flex-grow: 5;
+  }
+  .split-expand > .split-right {
+    flex-grow: 7;
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .split-expand:has(> .split-left:hover) > .split-left {
+      flex-grow: 6.4;
+    }
+    .split-expand:has(> .split-right:hover) > .split-right {
+      flex-grow: 8.6;
+    }
+  }
+}
+
+/* ---------- Page transitions (React ViewTransition in (site)/template.tsx) ---------- */
+::view-transition-old(.page-exit) {
+  animation: page-out 240ms var(--ease-out) both;
+}
+::view-transition-new(.page-enter) {
+  animation: page-in 560ms var(--ease-out) both;
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

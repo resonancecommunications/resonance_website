@@ -82,7 +82,7 @@ export default function BrandKitPage() {
     <>
       <section className="relative overflow-hidden bg-deep text-paper">
         <HeroBackdrop />
-        <div className="relative container-brand py-24 md:py-32">
+        <div className="relative container-brand pt-[calc(var(--header-h)+6rem)] pb-24 md:pb-32">
           <Carrier size="sm">Internal</Carrier>
           <h1 className="mt-8 text-display text-6xl text-teal md:text-8xl">Brand kit</h1>
           <p className="mt-6 max-w-xl text-muted-dark">

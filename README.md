@@ -258,10 +258,20 @@ docs/                  content spec and brand guidelines
 - **Required form fields:** Full Name, Email, Service of Interest, Project Description. Organization and Phone are optional.
 - **UI microcopy** not in the spec (form errors, empty state, 404, success message) is written in the brand voice and lives in `src/lib/strings.ts` or the Studio.
 
+**Client feedback round 1 (Home, Nov 2026)**
+
+- Main navigation reduced to Home, About Us, Services, Our Work, Contact (+ Start a Project). The Events and Media & Communications pages remain and are linked from the Home division cards; they will move under Our Work in the next round.
+- Who We Are on Home shortened to its first paragraph; the full text lives on About Us.
+- Footer: Our Divisions column removed; the Symbol badge ring rotates.
+- New interactions: glass header, stacked section scrolling on Home, hover glow on grid and Signal Field patterns, page transitions. All are disabled under reduced motion and on touch devices where relevant.
+- Sector cards now have short descriptions (**draft copy, awaiting approval**) and icons; both are editable in Pages → Home → Section 5.
+- "Our Group" section (sister companies) is built but hidden until logos are added in Pages → Home → Section 2b.
+
 **Content still needed from the client**
 
 - Official phone number and office address (hidden until set).
-- Social media URLs (icons hidden until set).
+- Social media URLs (the footer social column and icons appear once set).
+- Sister company logos and names for the "Our Group" section.
 - Client-approved projects, images and verified outcomes.
 - The production domain (`NEXT_PUBLIC_SITE_URL`).
 

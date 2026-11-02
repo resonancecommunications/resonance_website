@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { PointerGlow } from './PointerGlow'
 
 type HeroBackdropProps = {
   /** Where the soft teal arc sits. Divisions use opposite sides. */
@@ -20,12 +21,17 @@ const GLOWS = {
  */
 export function HeroBackdrop({ glow = 'right', className }: HeroBackdropProps) {
   return (
-    <div aria-hidden="true" className={cn('grain pointer-events-none absolute inset-0', className)}>
+    <div
+      aria-hidden="true"
+      className={cn('grain pointer-events-none absolute inset-0', className)}
+      style={{ ['--grid-size' as string]: 'clamp(5rem, 9vw, 8.5rem)' }}
+    >
       <div className="absolute inset-0 bg-[linear-gradient(160deg,var(--color-deep-2)_0%,var(--color-deep)_45%,var(--color-ink)_100%)]" />
       <div className="absolute inset-0" style={{ backgroundImage: GLOWS[glow] }} />
-      <div
-        className="absolute inset-0 grid-lines [mask-image:linear-gradient(to_bottom,#000,transparent_85%)]"
-        style={{ ['--grid-size' as string]: 'clamp(5rem, 9vw, 8.5rem)' }}
+      <div className="absolute inset-0 grid-lines [mask-image:linear-gradient(to_bottom,#000,transparent_85%)]" />
+      <PointerGlow
+        variant="grid"
+        className="[mask-image:linear-gradient(to_bottom,#000,transparent_85%)]"
       />
     </div>
   )

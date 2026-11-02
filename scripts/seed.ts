@@ -60,6 +60,7 @@ function arrayMemberType(item: JsonObject, parentKey: string): string | undefine
   if ('label' in item && 'href' in item) return 'navItem'
   if ('key' in item && 'number' in item) return 'division'
   if ('listLabel' in item && 'eyebrow' in item) return 'capabilitySection'
+  if ('icon' in item && 'description' in item) return 'sectorItem'
   if ('title' in item && 'description' in item)
     return parentKey === 'steps' ? 'processStep' : 'valueItem'
   return undefined

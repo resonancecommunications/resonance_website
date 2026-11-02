@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { cn } from '@/lib/utils'
+import { PointerGlow } from './PointerGlow'
 
 export type SignalFieldFade = 'none' | 'top' | 'bottom' | 'left' | 'right' | 'edges' | 'radial'
 
@@ -22,6 +23,8 @@ type SignalFieldProps = {
   fade?: SignalFieldFade
   /** Width of one RC unit in rem (the official grid proportions are kept). */
   unit?: number
+  /** Shapes under the pointer fill with a faint teal (desktop pointers only). */
+  interactive?: boolean
   className?: string
 }
 
@@ -34,6 +37,7 @@ export function SignalField({
   color = 'var(--color-teal)',
   fade = 'none',
   unit = 4.95,
+  interactive = false,
   className,
 }: SignalFieldProps) {
   const style = {
@@ -46,8 +50,16 @@ export function SignalField({
   return (
     <div
       aria-hidden="true"
-      className={cn('signal-field pointer-events-none absolute inset-0', className)}
+      className={cn('pointer-events-none absolute inset-0', className)}
       style={style}
-    />
+    >
+      <div className="signal-field absolute inset-0" />
+      {interactive ? (
+        <PointerGlow
+          variant="signal"
+          className="[mask-image:var(--sf-fade,linear-gradient(#000,#000))]"
+        />
+      ) : null}
+    </div>
   )
 }
