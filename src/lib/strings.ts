@@ -15,7 +15,7 @@ export const strings = {
     linkedin: 'LinkedIn',
     facebook: 'Facebook',
     instagram: 'Instagram',
-    youtube: 'YouTube',
+    tiktok: 'TikTok',
   },
   form: {
     required: 'Required',

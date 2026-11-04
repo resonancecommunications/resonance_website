@@ -522,7 +522,7 @@ export type SiteSettings = {
     linkedin?: string
     facebook?: string
     instagram?: string
-    youtube?: string
+    tiktok?: string
   }
   socialHandle?: string
   seo?: {
@@ -719,7 +719,7 @@ export type AllSanitySchemaTypes =
 
 // Source: src/sanity/lib/queries.ts
 // Variable: siteSettingsQuery
-// Query: *[_type == "siteSettings"][0]{  siteName, tagline, description, footerStatement, brandLine, brandLineOptions,  contactEmail, phone, officeAddress, location,  social{linkedin, facebook, instagram, youtube}, socialHandle,  seo{titleTemplate, description, ogImage{asset->{_id, url, metadata{lqip, dimensions{width, height}}}, crop, hotspot, alt, caption, treatment, overlayOpacity}},  logos{    "horizontal": horizontal.asset->url, "vertical": vertical.asset->url,    "symbol": symbol.asset->url, "mini": mini.asset->url,    "bw": bw.asset->url, "bwInverted": bwInverted.asset->url  }}
+// Query: *[_type == "siteSettings"][0]{  siteName, tagline, description, footerStatement, brandLine, brandLineOptions,  contactEmail, phone, officeAddress, location,  social{linkedin, facebook, instagram, tiktok}, socialHandle,  seo{titleTemplate, description, ogImage{asset->{_id, url, metadata{lqip, dimensions{width, height}}}, crop, hotspot, alt, caption, treatment, overlayOpacity}},  logos{    "horizontal": horizontal.asset->url, "vertical": vertical.asset->url,    "symbol": symbol.asset->url, "mini": mini.asset->url,    "bw": bw.asset->url, "bwInverted": bwInverted.asset->url  }}
 export type SiteSettingsQueryResult = {
   siteName: string | null
   tagline: string | null
@@ -735,7 +735,7 @@ export type SiteSettingsQueryResult = {
     linkedin: string | null
     facebook: string | null
     instagram: string | null
-    youtube: string | null
+    tiktok: string | null
   } | null
   socialHandle: string | null
   seo: {

@@ -136,7 +136,7 @@ Open `/studio` and sign in.
 
 **Site settings → Contact details**: email, phone, office address, location. Phone and address stay hidden on the website until they're filled in. Publish, and the footer, Contact page and structured data update.
 
-Social links are in **Site settings → Social media**. Each icon appears only once its URL is set.
+Social links are in **Site settings → Social media**. Each network appears only once its URL is set (shown in the footer and on the Contact page).
 
 ### How to add a project
 
@@ -270,7 +270,7 @@ docs/                  content spec and brand guidelines
 **Content still needed from the client**
 
 - Official phone number and office address (hidden until set).
-- Social media URLs (the footer social column and icons appear once set).
+- Social media profile URLs. The footer and contact page currently link to each network's homepage as temporary placeholders (`src/content/defaults.ts`); replace them before launch.
 - Sister company logos and names for the "Our Group" section.
 - Client-approved projects, images and verified outcomes.
 - The production domain (`NEXT_PUBLIC_SITE_URL`).

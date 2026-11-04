@@ -45,6 +45,8 @@ export async function Footer() {
 
   return (
     <footer className="relative overflow-hidden bg-ink text-paper">
+      {/* About five rows of the Signal Field rising from the bottom edge, fading out upward. */}
+      <SignalField opacity={0.14} fade="top" className="top-auto h-[18.5rem]" interactive />
       <div className="relative container-brand grid gap-12 pt-20 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:pt-28">
         <div className="lg:col-span-4">
           <Logo
@@ -65,7 +67,7 @@ export async function Footer() {
           <FooterLinks items={footer.quickLinks} />
         </nav>
 
-        <div className="grid gap-12 sm:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:col-span-5">
+        <div className="grid gap-x-8 gap-y-12 sm:grid-cols-[minmax(0,1fr)_auto] lg:col-span-5 lg:grid-cols-1 xl:grid-cols-[minmax(0,1fr)_auto]">
           <div>
             <FooterHeading>{footer.contactHeading}</FooterHeading>
             <address className="space-y-1 text-paper/80 not-italic">
@@ -96,7 +98,6 @@ export async function Footer() {
       </div>
 
       <div className="relative border-t border-white/10">
-        <SignalField opacity={0.14} fade="bottom" className="-bottom-6" interactive />
         <div className="relative container-brand flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <p className="font-display text-lg text-paper">{settings.footerStatement}</p>

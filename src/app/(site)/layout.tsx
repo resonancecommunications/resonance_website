@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { Analytics } from '@/components/layout/Analytics'
+import { DebugSwitches } from '@/components/layout/DebugSwitches'
+import { RevealObserver } from '@/components/layout/RevealObserver'
 import { DraftModeTools } from '@/components/layout/DraftModeTools'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { Footer } from '@/components/layout/Footer'
@@ -38,6 +40,8 @@ export default async function SiteLayout({ children }: LayoutProps<'/'>) {
         <DraftModeTools />
       </Suspense>
       <Analytics />
+      <DebugSwitches />
+      <RevealObserver />
     </>
   )
 }

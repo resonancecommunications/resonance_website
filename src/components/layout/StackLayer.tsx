@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, type ReactNode } from 'react'
+import { isOff } from '@/lib/debug-switches'
 import { cn } from '@/lib/utils'
 
 type StackLayerProps = {
@@ -20,6 +21,9 @@ type StackLayerProps = {
  * change when mobile browser toolbars show/hide, so layers never jump mid-scroll.
  * Falls back to normal document flow when reduced motion is requested.
  */
+/** Rounded top edge height (2rem): the next layer must be past it to fully cover. */
+const COVER_MARGIN = 34
+
 export function StackLayer({ children, index, last = false }: StackLayerProps) {
   const ref = useRef<HTMLDivElement>(null)
   const probeRef = useRef<HTMLDivElement>(null)
@@ -31,7 +35,7 @@ export function StackLayer({ children, index, last = false }: StackLayerProps) {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
     let width = window.innerWidth
     const update = () => {
-      if (reduced.matches) {
+      if (reduced.matches || isOff('stack')) {
         el.style.position = 'relative'
         el.style.top = ''
         return
@@ -45,12 +49,35 @@ export function StackLayer({ children, index, last = false }: StackLayerProps) {
       width = window.innerWidth
       update()
     }
+    // A layer that is fully covered by the next one (its rounded top edge included) is
+    // hidden, so Chrome can release its GPU tiles. Keeping every full-width layer of the
+    // stack alive exhausted Chrome's tile memory and left backgrounds blank mid-scroll.
+    let frame = 0
+    const checkCovered = () => {
+      frame = 0
+      const next = el.nextElementSibling
+      if (!(next instanceof HTMLElement) || el.style.position !== 'sticky') {
+        el.style.visibility = ''
+        return
+      }
+      const r = next.getBoundingClientRect()
+      const covered = r.top <= -COVER_MARGIN && r.bottom >= probe.offsetHeight
+      el.style.visibility = covered ? 'hidden' : ''
+    }
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(checkCovered)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
     update()
+    checkCovered()
     const observer = new ResizeObserver(update)
     observer.observe(el)
     window.addEventListener('resize', onResize)
     reduced.addEventListener('change', update)
     return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', onScroll)
       observer.disconnect()
       window.removeEventListener('resize', onResize)
       reduced.removeEventListener('change', update)
@@ -63,7 +90,7 @@ export function StackLayer({ children, index, last = false }: StackLayerProps) {
       className={cn(
         'relative',
         index > 0 &&
-          '-mt-8 overflow-clip rounded-t-[2rem] shadow-[0_-28px_60px_-12px_rgb(1_1_1/0.45)] motion-reduce:mt-0 motion-reduce:rounded-none',
+          '-mt-8 overflow-clip rounded-t-[2rem] shadow-[0_-12px_32px_-8px_rgb(1_1_1/0.4)] motion-reduce:mt-0 motion-reduce:rounded-none',
         last && 'flex min-h-svh flex-col motion-reduce:block motion-reduce:min-h-0 [&>*]:flex-1',
       )}
       style={{ zIndex: index + 1 }}

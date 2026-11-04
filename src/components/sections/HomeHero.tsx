@@ -8,7 +8,7 @@ import type { Hero } from '@/content/types'
 export function HomeHero({ hero }: { hero: Hero }) {
   return (
     <section className="relative isolate overflow-hidden bg-deep text-paper">
-      <HeroBackdrop glow="right" />
+      <HeroBackdrop glow="center" breathe />
       <div className="relative container-brand flex min-h-svh flex-col justify-between gap-16 pt-[calc(var(--header-h)+4rem)] pb-10 md:pt-[calc(var(--header-h)+6rem)] lg:pt-[calc(var(--header-h)+7rem)]">
         <div>
           <h1 className="max-w-[15ch] type-hero text-teal">{hero.headline}</h1>

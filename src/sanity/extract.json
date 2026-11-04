@@ -3023,7 +3023,7 @@
               },
               "optional": true
             },
-            "youtube": {
+            "tiktok": {
               "type": "objectAttribute",
               "value": {
                 "type": "string"

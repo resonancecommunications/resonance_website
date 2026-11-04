@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { CtaLink } from '@/components/ui/CtaLink'
 import { Eyebrow } from '@/components/ui/Eyebrow'
 import { Paragraphs } from '@/components/ui/Paragraphs'
@@ -24,7 +25,10 @@ export function ProcessSteps({ data }: { data: HomePage['approach'] }) {
       </div>
 
       <h3 className="mt-20 eyebrow text-teal lg:mt-28">{data.processLabel}</h3>
-      <ol className="relative mt-10 grid gap-0 lg:grid-cols-6 lg:gap-6">
+      <ol
+        className="relative mt-10 grid gap-0 lg:grid-cols-6 lg:gap-6"
+        style={{ '--steps': data.steps.length } as CSSProperties}
+      >
         {/* connecting line */}
         <span
           aria-hidden="true"
@@ -32,9 +36,11 @@ export function ProcessSteps({ data }: { data: HomePage['approach'] }) {
         />
         {data.steps.map((step, i) => (
           <li key={step.title} className="reveal relative pb-10 pl-10 last:pb-0 lg:pb-0 lg:pl-0">
+            {/* Pulses one step after another (globals.css → "Process step pulse"). */}
             <span
               aria-hidden="true"
-              className="absolute top-0 left-0 size-[0.875rem] rounded-full border-2 border-teal bg-ink lg:relative lg:block"
+              className="step-dot absolute top-0 left-0 size-[0.875rem] rounded-full border-2 border-teal bg-ink lg:relative lg:block"
+              style={{ '--i': i } as CSSProperties}
             />
             <p className="font-display text-sm text-teal lg:mt-8" aria-hidden="true">
               {pad2(i + 1)}

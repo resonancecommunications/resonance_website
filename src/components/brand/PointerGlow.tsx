@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { isOff } from '@/lib/debug-switches'
 import { cn } from '@/lib/utils'
 
 type PointerGlowProps = {
@@ -28,7 +29,18 @@ export function PointerGlow({ variant, className }: PointerGlowProps) {
     const capable = window.matchMedia(
       '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
     )
-    if (!capable.matches) return
+    if (!capable.matches || isOff('glow')) return
+
+    // Signal Field: the hover fill must read as one solid shape with no visible outline.
+    // The outline (alpha o) sits under the fill, so the fill is split into the shape's
+    // interior (alpha F) plus a top-up over the outline (alpha r) with
+    // 1 - (1 - o)(1 - r) = F, giving the whole shape exactly the same alpha.
+    if (variant === 'signal') {
+      const o = parseFloat(getComputedStyle(root).getPropertyValue('--sf-opacity')) || 0.16
+      const fill = Math.min(0.45, o * 2.2 + 0.06)
+      root.style.setProperty('--glow-fill', String(fill))
+      root.style.setProperty('--glow-ring', String(1 - (1 - fill) / (1 - o)))
+    }
 
     const cells = Array.from(root.querySelectorAll<HTMLElement>('[data-cell]'))
     let next = 0
@@ -47,8 +59,8 @@ export function PointerGlow({ variant, className }: PointerGlowProps) {
     const paint = () => {
       frame = 0
       if (!pointer) return
-      const w = probe.offsetWidth
-      const h = probe.offsetHeight
+      // Fractional size: rounding to whole pixels drifts a few px across the pattern.
+      const { width: w, height: h } = probe.getBoundingClientRect()
       if (!w || !h) return
       const rect = root.getBoundingClientRect()
       const x = pointer.x - rect.left
@@ -93,7 +105,7 @@ export function PointerGlow({ variant, className }: PointerGlowProps) {
       host.removeEventListener('pointerleave', out)
       window.removeEventListener('scroll', schedule)
     }
-  }, [])
+  }, [variant])
 
   return (
     <div
@@ -105,13 +117,16 @@ export function PointerGlow({ variant, className }: PointerGlowProps) {
         ref={probeRef}
         className={variant === 'grid' ? 'glow-probe-grid' : 'glow-probe-signal'}
       />
-      {Array.from({ length: POOL }, (_, i) => (
-        <div
-          key={i}
-          data-cell
-          className={variant === 'grid' ? 'glow-cell-grid' : 'glow-cell-signal'}
-        />
-      ))}
+      {Array.from({ length: POOL }, (_, i) =>
+        variant === 'grid' ? (
+          <div key={i} data-cell className="glow-cell-grid" />
+        ) : (
+          <div key={i} data-cell className="glow-cell-signal">
+            <span className="glow-signal-inner" />
+            <span className="glow-signal-ring" />
+          </div>
+        ),
+      )}
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { cn } from '@/lib/utils'
+import { FlowPlayback } from './FlowPlayback'
 
 /*
  * Official Resonance Flow artwork (brand-assets/patterns/resonance-flow-0x_*.svg).
@@ -93,25 +94,74 @@ export function ResonanceFlow({
     .filter(Boolean)
     .join(' ')
 
+  const stops = GRADIENTS[fill].map((stop) => (
+    <stop
+      key={stop.offset}
+      offset={stop.offset}
+      stopColor="currentColor"
+      stopOpacity={stop.opacity}
+    />
+  ))
+
+  if (animated) {
+    // Each segment is its own small <svg> (a window onto the official path) so the pulse
+    // animates HTML elements: transform/opacity run on the compositor with no repaints.
+    // The gradient spans x0..x1 in every window, so it stays continuous across segments.
+    const width = x1 - x0
+    return (
+      <div
+        aria-hidden="true"
+        className={cn('flow-animated relative flex text-teal', className)}
+        style={{
+          ...style,
+          aspectRatio: `${width} / ${art.height}`,
+          transform: transforms || undefined,
+        }}
+      >
+        {art.columns.slice(from, to).map((left, i) => {
+          const w = art.columns[from + i + 1] - left
+          return (
+            <svg
+              key={left}
+              focusable="false"
+              viewBox={`${left} 0 ${w} ${art.height}`}
+              preserveAspectRatio="none"
+              className="flow-segment block h-full shrink-0 overflow-hidden"
+              style={{ width: `${(w / width) * 100}%`, '--i': i } as CSSProperties}
+            >
+              <defs>
+                <linearGradient
+                  id={`${id}-g${i}`}
+                  x1={x0}
+                  x2={x1}
+                  y1="0"
+                  y2="0"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  {stops}
+                </linearGradient>
+              </defs>
+              <path d={art.d} fill={`url(#${id}-g${i})`} />
+            </svg>
+          )
+        })}
+        <FlowPlayback />
+      </div>
+    )
+  }
+
   return (
     <svg
       aria-hidden="true"
       focusable="false"
       viewBox={`${x0} 0 ${x1 - x0} ${art.height}`}
       preserveAspectRatio="xMidYMid meet"
-      className={cn('block overflow-visible text-teal', animated && 'flow-animated', className)}
+      className={cn('block overflow-visible text-teal', className)}
       style={{ ...style, transform: transforms || undefined }}
     >
       <defs>
         <linearGradient id={`${id}-g`} x1={x0} x2={x1} y1="0" y2="0" gradientUnits="userSpaceOnUse">
-          {GRADIENTS[fill].map((stop) => (
-            <stop
-              key={stop.offset}
-              offset={stop.offset}
-              stopColor="currentColor"
-              stopOpacity={stop.opacity}
-            />
-          ))}
+          {stops}
         </linearGradient>
         {art.columns.slice(from, to).map((left, i) => (
           <clipPath key={left} id={`${id}-c${i}`}>
@@ -126,12 +176,7 @@ export function ResonanceFlow({
       </defs>
       {art.columns.slice(from, to).map((left, i) => (
         <g key={left} clipPath={`url(#${id}-c${i})`}>
-          <path
-            className="flow-segment"
-            style={{ '--i': i } as CSSProperties}
-            d={art.d}
-            fill={`url(#${id}-g)`}
-          />
+          <path d={art.d} fill={`url(#${id}-g)`} />
         </g>
       ))}
     </svg>

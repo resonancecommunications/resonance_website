@@ -179,8 +179,7 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: var(--grain-opacity, 0.09);
-    mix-blend-mode: overlay;
+    opacity: var(--grain-opacity, 0.045);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
@@ -209,23 +208,29 @@
 @keyframes flow-pulse {
   0%,
   100% {
-    transform: scaleY(0.94);
-    opacity: 0.6;
+    transform: scaleY(0.78);
+    opacity: 0.4;
   }
   50% {
     transform: scaleY(1);
-    opacity: 0.95;
+    opacity: 1;
   }
 }
 
 .flow-segment {
-  transform-box: fill-box;
   transform-origin: center;
 }
 
+/* Composited animation (transform + opacity on HTML-level segments). Paused until
+   FlowPlayback marks the flow as visible. */
 .flow-animated .flow-segment {
-  animation: flow-pulse var(--flow-duration, 7.2s) ease-in-out infinite;
-  animation-delay: calc(var(--i) * var(--flow-stagger, 0.35s));
+  animation: flow-pulse var(--flow-duration, 5.2s) ease-in-out infinite;
+  animation-delay: calc(var(--i) * var(--flow-stagger, 0.26s));
+  animation-play-state: paused;
+}
+.flow-animated[data-playing] .flow-segment {
+  animation-play-state: running;
+  will-change: transform, opacity;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -234,39 +239,78 @@
   }
 }
 
-/* ---------- Reveal on scroll (CSS-only, progressive) ---------- */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .reveal {
-      animation: reveal-in linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 40%;
-    }
-    .carrier-reveal {
-      animation: carrier-in linear both;
-      animation-timeline: view();
-      animation-range: entry 10% entry 55%;
-    }
-  }
-}
-
-@keyframes reveal-in {
-  from {
+/* ---------- Reveal on scroll ----------
+   One-time fade/slide in, triggered by RevealObserver (IntersectionObserver) adding
+   .is-visible. Deliberately not a scroll-linked animation-timeline: those keep every
+   animated element on its own GPU layer for good, which inside the stacked sticky
+   sections exhausted Chrome's tile memory (blank backgrounds while scrolling).
+   Without JavaScript (scripting: none) content is simply visible. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .reveal:not(.is-visible) {
     opacity: 0;
     transform: translateY(1.5rem);
   }
-  to {
-    opacity: 1;
-    transform: none;
+  .reveal {
+    transition:
+      opacity 700ms var(--ease-out),
+      transform 700ms var(--ease-out);
+  }
+  .carrier-reveal:not(.is-visible) {
+    clip-path: inset(0 100% 0 0);
+  }
+  .carrier-reveal {
+    transition: clip-path 800ms var(--ease-out);
   }
 }
 
-@keyframes carrier-in {
-  from {
-    clip-path: inset(0 100% 0 0);
+/* ---------- Breathing glow (HeroBackdrop breathe) ---------- */
+@keyframes glow-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.94);
   }
-  to {
-    clip-path: inset(0 0 0 0);
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+.glow-breathe {
+  transform-origin: 50% 100%;
+  animation: glow-breathe 7s ease-in-out infinite;
+}
+
+/* ---------- Process step pulse: each step's ring pulses in turn ---------- */
+@keyframes step-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(1 210 178 / 0.55);
+    transform: scale(1);
+    background-color: var(--color-ink);
+  }
+  6% {
+    transform: scale(1.35);
+    background-color: var(--color-teal);
+  }
+  14% {
+    box-shadow: 0 0 0 14px rgb(1 210 178 / 0);
+    transform: scale(1);
+    background-color: var(--color-ink);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgb(1 210 178 / 0);
+    transform: scale(1);
+    background-color: var(--color-ink);
+  }
+}
+.step-dot {
+  animation: step-pulse calc(var(--steps, 6) * 0.7s) var(--ease-out) infinite;
+  animation-delay: calc(var(--i, 0) * 0.7s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-breathe,
+  .step-dot {
+    animation: none;
   }
 }
 
@@ -295,23 +339,33 @@
   left: 0;
   opacity: 0;
   transition: opacity 1100ms ease-out;
-  will-change: opacity, transform;
 }
 .glow-cell-grid {
   background: rgb(1 210 178 / 0.07);
   box-shadow: inset 1px 1px 0 rgb(1 210 178 / 0.4);
 }
-.glow-cell-signal {
-  background: var(--color-teal);
-  -webkit-mask: url('/brand/signal-field-tile-fill.svg') center / 100% 100% no-repeat;
-  mask: url('/brand/signal-field-tile-fill.svg') center / 100% 100% no-repeat;
+.glow-signal-inner,
+.glow-signal-ring {
+  position: absolute;
+  inset: 0;
+  background: var(--sf-color, var(--color-teal));
+}
+.glow-signal-inner {
+  opacity: var(--glow-fill, 0.3);
+  -webkit-mask: url('/brand/signal-field-tile-inner.svg') 0 0 / 100% 100% no-repeat;
+  mask: url('/brand/signal-field-tile-inner.svg') 0 0 / 100% 100% no-repeat;
+}
+.glow-signal-ring {
+  opacity: var(--glow-ring, 0.2);
+  -webkit-mask: url('/brand/signal-field-tile.svg') 0 0 / 100% 100% no-repeat;
+  mask: url('/brand/signal-field-tile.svg') 0 0 / 100% 100% no-repeat;
 }
 .glow-cell-grid.is-on {
   opacity: 1;
   transition-duration: 160ms;
 }
 .glow-cell-signal.is-on {
-  opacity: 0.2;
+  opacity: 1;
   transition-duration: 160ms;
 }
 

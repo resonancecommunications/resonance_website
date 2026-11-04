@@ -4,7 +4,8 @@ import { SignalField } from '@/components/brand/SignalField'
 import { InquiryForm } from '@/components/forms/InquiryForm'
 import { PageHero } from '@/components/sections/PageHero'
 import { Eyebrow } from '@/components/ui/Eyebrow'
-import { getContactPage, getSiteSettings } from '@/lib/content'
+import { SocialLinks } from '@/components/layout/SocialLinks'
+import { getContactPage, getNavigation, getSiteSettings } from '@/lib/content'
 import { buildMetadata } from '@/lib/seo'
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs'
 
@@ -21,7 +22,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
-  const [page, settings] = await Promise.all([getContactPage(), getSiteSettings()])
+  const [page, settings, navigation] = await Promise.all([
+    getContactPage(),
+    getSiteSettings(),
+    getNavigation(),
+  ])
   const { info } = page
 
   // Only real values are shown: empty fields (phone, address) stay hidden.
@@ -74,6 +79,12 @@ export default async function ContactPage() {
                   </div>
                 ))}
               </dl>
+              {Object.values(settings.social).some(Boolean) ? (
+                <div className="mt-8">
+                  <p className="text-sm text-muted-light">{navigation.footer.socialHeading}</p>
+                  <SocialLinks social={settings.social} tone="light" className="mt-3" />
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="relative overflow-hidden rounded-[1.75rem] border border-ink/10 p-6 sm:p-10 lg:col-span-8 lg:p-14">

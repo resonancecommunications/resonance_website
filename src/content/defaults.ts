@@ -40,7 +40,13 @@ export const siteSettings: SiteSettings = {
   phone: null,
   officeAddress: null,
   location: 'Addis Ababa, Ethiopia',
-  social: { linkedin: null, facebook: null, instagram: null, youtube: null },
+  // TEMPORARY: network homepages until the real profile URLs are provided. Replace before launch.
+  social: {
+    linkedin: 'https://www.linkedin.com/',
+    facebook: 'https://www.facebook.com/',
+    instagram: 'https://www.instagram.com/',
+    tiktok: 'https://www.tiktok.com/',
+  },
   socialHandle: null,
   seo: {
     titleTemplate: '%s | Resonance Communications',
@@ -59,7 +65,8 @@ export const navigation: Navigation = {
     { label: 'Our Work', href: '/our-work' },
     { label: 'Contact', href: CONTACT },
   ],
-  headerCta: { label: 'Start a Project', href: CONTACT, style: 'primary' },
+  // Client request (Nov 2026): was "Start a Project" in the spec.
+  headerCta: { label: 'Resonate With Us', href: CONTACT, style: 'primary' },
   footer: {
     quickLinksHeading: 'Quick Links',
     quickLinks: [
@@ -239,7 +246,7 @@ export const homePage: HomePage = {
   closingCta: {
     headline: "Let's Make Your Next Project Resonate.",
     body: 'Whether you need a professional event, a creative media production, or an integrated communication solution, our team is ready to understand your vision and help bring it to life.',
-    primaryCta: { label: 'Start a Project', href: CONTACT, style: 'primary' },
+    primaryCta: { label: 'Resonate With Us', href: CONTACT, style: 'primary' },
     secondaryCta: {
       label: 'Contact Us',
       href: `${CONTACT}#contact-information`,

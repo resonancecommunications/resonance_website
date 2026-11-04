@@ -93,7 +93,7 @@ export type SiteSettings = {
     linkedin?: string | null
     facebook?: string | null
     instagram?: string | null
-    youtube?: string | null
+    tiktok?: string | null
   }
   socialHandle?: string | null
   seo: {

@@ -35,10 +35,11 @@ export default async function HomePage() {
       eyebrow={page.intro.eyebrow}
       headline={page.intro.headline}
       headingId="intro-heading"
+      spread
     >
       <Paragraphs items={page.intro.body} lead className="text-paper/85" />
       {page.intro.cta ? (
-        <div className="mt-10">
+        <div>
           <CtaLink cta={page.intro.cta} />
         </div>
       ) : null}

@@ -10,6 +10,11 @@ type SplitSectionProps = {
   children: ReactNode
   /** Light heading side + dark content side, as on the guideline's content slides. */
   reverse?: boolean
+  /**
+   * Desktop: near full-screen height with content spread to the edges (eyebrow top,
+   * headline bottom on the light side; content top, CTA bottom on the dark side).
+   */
+  spread?: boolean
   id?: string
 }
 
@@ -23,14 +28,20 @@ export function SplitSection({
   headingId,
   children,
   reverse = false,
+  spread = false,
   id,
 }: SplitSectionProps) {
   const edge = 'max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)))'
   return (
-    <section id={id} aria-labelledby={headingId} className="split-expand flex flex-col lg:flex-row">
+    <section
+      id={id}
+      aria-labelledby={headingId}
+      className={cn('split-expand flex flex-col lg:flex-row', spread && 'lg:min-h-[88svh]')}
+    >
       <div
         className={cn(
-          'split-left on-light relative overflow-hidden bg-paper py-20 text-ink md:py-28 lg:py-32',
+          'split-left on-light relative overflow-hidden bg-paper py-20 text-ink md:py-28',
+          spread ? 'flex flex-col lg:py-28' : 'lg:py-32',
           reverse && 'lg:order-2',
         )}
         style={{
@@ -39,26 +50,47 @@ export function SplitSection({
         }}
       >
         <SignalField opacity={0.25} color="var(--color-gray)" fade="top" interactive />
-        <div className="reveal relative max-w-[30rem] lg:sticky lg:top-[calc(var(--header-h)+3rem)]">
+        <div
+          className={cn(
+            'reveal relative max-w-[32rem]',
+            spread
+              ? 'flex flex-1 flex-col gap-10 lg:justify-between'
+              : 'lg:sticky lg:top-[calc(var(--header-h)+3rem)]',
+          )}
+        >
           {eyebrow ? (
-            <Eyebrow tone="light" className="mb-6">
+            <Eyebrow tone="light" className={spread ? undefined : 'mb-6'}>
               {eyebrow}
             </Eyebrow>
           ) : null}
-          <h2 id={headingId} className="type-h2">
+          <h2
+            id={headingId}
+            className={cn('type-h2', spread && 'lg:text-[4.25rem] lg:leading-[1.02]')}
+          >
             {headline}
           </h2>
         </div>
       </div>
       <div
-        className="split-right relative overflow-hidden bg-surface py-20 text-paper md:py-28 lg:py-32"
+        className={cn(
+          'split-right relative overflow-hidden bg-surface py-20 text-paper md:py-28',
+          spread ? 'flex flex-col lg:py-28' : 'lg:py-32',
+        )}
         style={{
           paddingInlineStart: reverse ? edge : 'var(--gutter)',
           paddingInlineEnd: reverse ? 'var(--gutter)' : edge,
         }}
       >
         <SignalField opacity={0.055} fade="bottom" interactive />
-        <div className="reveal relative max-w-2xl lg:pl-8">{children}</div>
+        <div
+          className={cn(
+            'reveal relative max-w-2xl lg:pl-8',
+            spread &&
+              'flex flex-1 flex-col gap-10 lg:justify-between lg:[&_p:first-child]:font-display lg:[&_p:first-child]:text-[1.75rem] lg:[&_p:first-child]:leading-[1.4] lg:[&_p:first-child]:font-light',
+          )}
+        >
+          {children}
+        </div>
       </div>
     </section>
   )

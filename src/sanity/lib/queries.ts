@@ -19,7 +19,7 @@ const approvedProject = /* groq */ `_type == "project" && clientApproved == true
 export const siteSettingsQuery = defineQuery(`*[_type == "siteSettings"][0]{
   siteName, tagline, description, footerStatement, brandLine, brandLineOptions,
   contactEmail, phone, officeAddress, location,
-  social{linkedin, facebook, instagram, youtube}, socialHandle,
+  social{linkedin, facebook, instagram, tiktok}, socialHandle,
   seo{titleTemplate, description, ogImage{${image}}},
   logos{
     "horizontal": horizontal.asset->url, "vertical": vertical.asset->url,

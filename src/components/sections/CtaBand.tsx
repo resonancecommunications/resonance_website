@@ -12,7 +12,7 @@ export function CtaBand({ banner }: { banner: CtaBanner }) {
       aria-labelledby={id}
       className="relative flex flex-col justify-center overflow-hidden bg-deep text-paper"
     >
-      <HeroBackdrop glow="center" />
+      <HeroBackdrop glow="center" grid={false} breathe />
       <SignalField opacity={0.12} fade="radial" interactive />
       <div className="reveal relative container-brand py-24 text-center md:py-32 lg:py-40">
         <h2 id={id} className="mx-auto max-w-4xl type-h1 text-teal">

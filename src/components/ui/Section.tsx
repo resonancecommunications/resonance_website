@@ -17,6 +17,8 @@ type SectionProps = {
   id?: string
   /** Fine grid-line motif in the background. */
   gridLines?: boolean
+  /** Fade the grid lines out toward the top of the section. */
+  gridFadeTop?: boolean
   className?: string
   containerClassName?: string
   /** Accessible name when the section has no visible heading id to point to. */
@@ -30,6 +32,7 @@ export function Section({
   tone = 'light',
   id,
   gridLines = false,
+  gridFadeTop = false,
   className,
   containerClassName,
   labelledBy,
@@ -45,14 +48,24 @@ export function Section({
         <>
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 grid-lines"
+            className={cn(
+              'pointer-events-none absolute inset-0 grid-lines',
+              gridFadeTop && '[mask-image:linear-gradient(to_bottom,transparent,#000_45%)]',
+            )}
             style={
               tone === 'light'
                 ? { ['--grid-line' as string]: 'var(--color-line-light)' }
                 : undefined
             }
           />
-          <PointerGlow variant="grid" />
+          <PointerGlow
+            variant="grid"
+            className={
+              gridFadeTop
+                ? '[mask-image:linear-gradient(to_bottom,transparent,#000_45%)]'
+                : undefined
+            }
+          />
         </>
       ) : null}
       {bleed}

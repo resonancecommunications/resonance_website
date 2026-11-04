@@ -13,7 +13,7 @@ const ICONS: Record<SectorIcon, string> = {
 
 export function Sectors({ data }: { data: HomePage['clients'] }) {
   return (
-    <Section tone="light" labelledBy="clients-heading" gridLines>
+    <Section tone="light" labelledBy="clients-heading" gridLines gridFadeTop>
       <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-16">
         <SectionHeading
           eyebrow={data.eyebrow}

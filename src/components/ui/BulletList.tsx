@@ -6,6 +6,8 @@ type BulletListProps = {
   tone?: 'light' | 'dark'
   /** lg: display typeface at a larger size (division service lists). */
   size?: 'md' | 'lg'
+  /** Hairline rule under each item. */
+  divided?: boolean
   className?: string
 }
 
@@ -15,6 +17,7 @@ export function BulletList({
   columns = 1,
   tone = 'dark',
   size = 'md',
+  divided = true,
   className,
 }: BulletListProps) {
   return (
@@ -30,9 +33,15 @@ export function BulletList({
         <li
           key={item}
           className={cn(
-            'flex items-start gap-3 border-b leading-snug',
-            size === 'lg' ? 'py-3.5 font-display text-lg' : 'py-3 text-[0.9375rem]',
-            tone === 'dark' ? 'border-white/10' : 'border-ink/10',
+            'flex items-start gap-3 leading-snug',
+            size === 'lg' ? 'font-display text-lg' : 'text-[0.9375rem]',
+            divided
+              ? cn(
+                  'border-b',
+                  size === 'lg' ? 'py-3.5' : 'py-3',
+                  tone === 'dark' ? 'border-white/10' : 'border-ink/10',
+                )
+              : 'py-2',
             size === 'lg' && tone === 'dark' && 'text-paper',
           )}
         >
